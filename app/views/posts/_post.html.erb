@@ -1,0 +1,44 @@
+<div class="posts-wrapper">
+  <div class="post">
+    <div class="post-head">
+      <div class="thumb-img"></div>
+      <div class="user-name">
+        <%= link_to post.user.user_name, profile_path(post.user.user_name) %>
+      </div>
+    </div>
+    <div class="image center-block">
+      <%= link_to (image_tag post.image.url(:medium), class:'img-responsive'), post_path(post) %>
+    </div>
+    <div class="post-bottom">
+      <%= render 'posts/likes', post: post %>
+      <div class="caption">
+        <div class="caption-content">
+          <div class="user-name">
+            <%= link_to post.user.user_name, profile_path(post.user.user_name) %>
+          </div>
+          <%= post.caption %>
+          <div class="comments" id="comments_<%= post.id %>">
+          	<% if post.comments.any? %>
+          	<%= render post.comments.last(4), post: post %>
+          	<% unless post.comments.count <= 4 %>
+          	<div class="paginator", id="#comments-paginator-#{post.id}">
+          		<%= link_to "view all #{post.comments.count} comments", post_comments_path(post), remote: true, class: 'more-comments', data: {post_id: "#{post.id}", type: "html"} %>
+          	</div>
+          	<% end %>
+          	<% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-like-form row">
+      <div class="like-button col-sm-1">
+        <%= liked_post post %>
+      </div>
+      <div class="comment-form col-sm-11">
+        <%= form_for [post, post.comments.build] do |f| %>
+          <%= f.text_field :content, placeholder: 'Add a comment...', class: "comment_content", id: "comment_content_#{post.id}" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

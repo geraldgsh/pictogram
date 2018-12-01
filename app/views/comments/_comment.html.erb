@@ -1,0 +1,13 @@
+<div id="comment">
+  <div class="user-name">
+    <%= link_to comment.user.user_name, profile_path(comment.user.user_name) %>
+  </div>
+  <div class="comment-content">
+    <%= comment.content %>
+  </div>
+  <% if comment.user == current_user %>
+    <%= link_to post_comment_path(post, comment), method: :delete, data: {post_id: post.id, value: post.comments.count, confirm: "Are you sure?" }, remote: true, id: "delete-#{comment.id}", class: "delete-comment" do %>
+      <span class="glyphicon glyphicon-remove delete-comment-icon"></span>
+    <% end %>
+  <% end %>
+</div>
